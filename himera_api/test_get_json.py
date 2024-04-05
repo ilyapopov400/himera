@@ -1,3 +1,6 @@
+"""
+тесты для нулевого баланса
+"""
 import unittest
 from get_json import Answer
 
