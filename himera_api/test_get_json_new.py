@@ -2,21 +2,17 @@
 тесты для нулевого баланса
 """
 import unittest
-from get_json_new import ChangeRequest
+from get_json_new import ParserHimera
+from example_request_json import data as test_data
 
-
-class MyTestCase(unittest.TestCase):
-    def test_name_standart(self):
-        parser = ChangeRequest
-        result = parser.name_standart(question="Иван Иванов Иванович ")
-        correct_answer = {'error': 'Not enough money'}
-        self.assertEqual(result, correct_answer)
-
-    def test_phone(self):
-        parser = ChangeRequest
-        result = parser.phone(question="79123456789")
-        correct_answer = {'error': 'Not enough money'}
-        self.assertEqual(result, correct_answer)
+for key in test_data.keys():
+    class MyTestCase(unittest.TestCase):
+        def test_ParserHimera(self):
+            dt = dict()
+            dt[key] = test_data[key]
+            result = ParserHimera(data=dt)()
+            correct_answer = {'error': 'Not enough money'}
+            self.assertEqual(result, correct_answer)
 
 
 if __name__ == '__main__':
