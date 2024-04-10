@@ -1,6 +1,7 @@
 import requests
 import json
 from fake_useragent import UserAgent
+import pickle
 from key import KEY
 
 KEY = KEY
@@ -58,6 +59,17 @@ class GetJson:
         return result
 
 
+def writer_answer(answer):
+    """
+    запись ответа от сервера в файл "answer.py"
+    :param answer:
+    :return:
+    """
+    with open(file="answer.py", mode="a") as file:
+        file.write(json.dumps(answer))
+        file.write("\n")
+
+
 def mane():
     data = {
         "phone": {
@@ -77,6 +89,7 @@ def mane():
         },
     }
     result = ParserHimera(data=data1)()
+    writer_answer(answer=result)
     print(result)
 
 
