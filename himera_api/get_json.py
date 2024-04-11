@@ -1,7 +1,9 @@
 import requests
 import json
 from fake_useragent import UserAgent
-import pickle
+import random
+import os
+from datetime import date
 from key import KEY
 
 KEY = KEY
@@ -22,8 +24,24 @@ class ParserHimera:
         result = GetJson(url=url, data=data.get(self.key))()
         return result
 
+    def _writer_answer(self, answer):
+        """
+        запись ответа от сервера в директорию "answers/today/key/key.py"
+        :param answer:
+        :return:
+        """
+        patch_dir = 'answers/{}/{}'.format(date.today(), self.key)
+        patch_file = "{}/{}{}.py".format(patch_dir, self.key, random.randint(1, 100))
+        os.makedirs(patch_dir, exist_ok=True)
+        with open(file=patch_file, mode="w") as file:
+            file.write(json.dumps(answer))
+            file.write("\n")
+
     def __call__(self):
-        return self._get_data(data=self.data)
+        result = self._get_data(data=self.data)
+        self._writer_answer(answer=result)
+
+        return result
 
 
 class GetJson:
@@ -59,17 +77,6 @@ class GetJson:
         return result
 
 
-def writer_answer(answer):
-    """
-    запись ответа от сервера в файл "answer.py"
-    :param answer:
-    :return:
-    """
-    with open(file="answer.py", mode="a") as file:
-        file.write(json.dumps(answer))
-        file.write("\n")
-
-
 def mane():
     data = {
         "phone": {
@@ -88,8 +95,8 @@ def mane():
             "year": "",
         },
     }
-    result = ParserHimera(data=data1)()
-    writer_answer(answer=result)
+    result = ParserHimera(data=data)()
+    # writer_answer(answer=result)
     print(result)
 
 
