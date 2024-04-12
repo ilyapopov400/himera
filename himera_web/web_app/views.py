@@ -20,15 +20,31 @@ class QueryType(FormView):
     """
     странца выбора поискового запроса
     """
-    form_class = forms.QueryFormType
+    form_class = forms.QueryTypeForm
     template_name = "web_app/query_type.html"
-    success_url = reverse_lazy('web_app:query-type')
+    success_url = reverse_lazy('web_app:query_type')
 
     def post(self, request):
-        form = forms.QueryFormType(request.POST)
+        form = forms.QueryTypeForm(request.POST)
         if form.is_valid():
             result = form.cleaned_data.get("query_type")
-            print(result)
-            if result == "aaa":
-                return redirect(to="web_app:index")
+            print(result)  # TODO
+            if result == "name_standart":
+                return redirect(to="web_app:{}".format(result))
+        return super(self.__class__, self).post(request)
+
+
+class NameStandart(FormView):
+    """
+    поисковый запрос по полным учетным данным
+    """
+    form_class = forms.NameStandartForm
+    template_name = "web_app/name_standart.html"
+    success_url = reverse_lazy('web_app:index')
+
+    def post(self, request):
+        form = forms.NameStandartForm(request.POST)
+        if form.is_valid():
+            result = form.cleaned_data
+            print(result)  # TODO данные для запроса на API
         return super(self.__class__, self).post(request)

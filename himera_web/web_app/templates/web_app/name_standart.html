@@ -6,14 +6,18 @@
 
 {% block content %}
 <div class="card-base">
-    <h1>Выберите тип поискового запроса</h1>
+    <h1>Поисковый запрос по полным учетным данным</h1>
 </div>
 <div class="card-base">
     <form action="" method="post">
         {% csrf_token %}
-        {{ form }}
+        <ul>
+            {% for field in form %}
+            <li>{{ field.label }} {{ field }}</li><br>
+            {% endfor %}
+        </ul>
         <div>
-            <button type="submit" value="тип запроса">отправить тип запроса</button>
+            <button type="submit" value="тип запроса">отправить запрос</button>
             |
             <button type="reset">очистить форму</button>
         </div>
