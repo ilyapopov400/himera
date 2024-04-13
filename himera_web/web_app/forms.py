@@ -2,7 +2,7 @@ from django import forms
 
 query_type_choices = [
     ("name_standart", "name_standart - стандартный запрос"),
-    ("2", "phone"),
+    ("phone", "phone"),
     ("3", "passport"),
     ("4", "inn_fl"),
     ("5", "email"),
@@ -28,3 +28,7 @@ class NameStandartForm(forms.Form):
     day = forms.CharField(label="день", max_length=2, min_length=2)
     mounth = forms.CharField(label="месяц", max_length=2, min_length=2)
     year = forms.CharField(label="год", max_length=4, min_length=4)
+
+
+class PhoneForm(forms.Form):
+    phone = forms.CharField(label="телефон", max_length=11, min_length=11)

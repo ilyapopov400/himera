@@ -1,9 +1,10 @@
 import requests
 import json
 from fake_useragent import UserAgent
-import random
+
 import os
 from datetime import date
+import datetime
 from key import KEY
 
 KEY = KEY
@@ -31,7 +32,10 @@ class ParserHimera:
         :return:
         """
         patch_dir = 'answers/{}/{}'.format(date.today(), self.key)
-        patch_file = "{}/{}{}.py".format(patch_dir, self.key, random.randint(1, 100))
+        patch_file = "{}/{}{}{}.py".format(patch_dir,
+                                           self.key,
+                                           datetime.datetime.now().time().hour,
+                                           datetime.datetime.now().time().minute)
         os.makedirs(patch_dir, exist_ok=True)
         with open(file=patch_file, mode="w") as file:
             file.write(json.dumps(answer))
