@@ -4,7 +4,9 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 
+
 from . import forms
+from himera_api import get_json
 
 
 # Create your views here.
@@ -61,6 +63,8 @@ class Query(View):
                 key: result
             }
             print(data)  # TODO данные для запроса на API
+            res = get_json.ParserHimera(data=data)()
+            print(res)
             template_name = "web_app/index.html"  # TODO изменить на страницу с результатом запроса
             return render(request=request,
                           template_name=template_name,
