@@ -4,7 +4,6 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 
-
 from . import forms
 from himera_api import get_json
 
@@ -40,7 +39,7 @@ class QueryType(FormView):
 
 class Query(View):
     """
-    поисковый запрос по полным учетным данным
+    поисковый запрос
     """
 
     def get(self, request, **kwargs):
@@ -58,24 +57,15 @@ class Query(View):
         template_name = "web_app/query.html"
         context = {"form": form}
         if form.is_valid():
-            result = form.cleaned_data
             data = {
-                key: result
+                key: form.cleaned_data
             }
-            print(data)  # TODO данные для запроса на API
-            res = get_json.ParserHimera(data=data)()
-            print(res)
-            template_name = "web_app/index.html"  # TODO изменить на страницу с результатом запроса
+            result_from_parser = get_json.ParserHimera(data=data)()
+            template_name = "web_app/query_result.html"
+            context = {"result_from_parser": result_from_parser}
             return render(request=request,
                           template_name=template_name,
                           context=context)
         return render(request=request,
                       template_name=template_name,
                       context=context)
-
-
-class QueryResult(TemplateView):
-    """
-    страница с результатами поискового запроса
-    """
-    template_name = "web_app/query_result.html"

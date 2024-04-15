@@ -8,6 +8,12 @@ html {
     padding: 10px;
 }
 
+.query_result {
+    background-color: darkgreen;
+    margin: 10px;
+    padding: 10px;
+}
+
 .navbar {
     background-color: mediumslateblue;
     margin: 10px;
