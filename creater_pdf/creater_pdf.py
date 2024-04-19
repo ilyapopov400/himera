@@ -40,11 +40,13 @@ class CreatorPDF:
         text_json = self._get_data(path_file=file)
         result = self._parser(text_json=text_json)
 
-        text = ""
+        text = list()
         for row in result:
             for key in row.keys():
                 # print(key, row.get(key))
-                text += "{}: {}\n".format(key, row.get(key))
+                text.append(
+                    "{}: {}\n".format(key, row.get(key))
+                )
 
         # print(text)
         pdf = FPDF()
@@ -53,7 +55,8 @@ class CreatorPDF:
         pdf.set_font("Arial", size=14)
         # text = pdf.normalize_text(txt=text)  # TODO
         # text.encode(encoding='UTF-8', errors='strict')
-        pdf.cell(200, 10, txt=text)
+        for row in text:
+            pdf.cell(200, 10, txt=row, ln=1, align='C')
         # pdf.cell(200, 10, txt=text.encode('utf-8').decode('latin-1'), ln=1, align='C')
         # Сохраняем созданный PDF-файл
         pdf.output(name="data.pdf")
