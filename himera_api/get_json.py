@@ -5,6 +5,9 @@ from fake_useragent import UserAgent
 import os
 from datetime import date
 import datetime
+
+from json import JSONDecodeError
+
 from key import KEY
 
 KEY = KEY
@@ -37,7 +40,12 @@ class ParserHimera:
                                            datetime.datetime.now().time().hour,
                                            datetime.datetime.now().time().minute)
         os.makedirs(patch_dir, exist_ok=True)
-        with open(file=patch_file, mode="w") as file:
+        with open(file=patch_file, mode="w", encoding="utf-8") as file:
+            file.write(json.dumps(answer))
+            file.write("\n")
+
+        os.makedirs("TEST_DATA/", exist_ok=True)
+        with open(file="TEST_DATA/{}".format(self.key), mode="w", encoding="utf-8") as file:
             file.write(json.dumps(answer))
             file.write("\n")
 
@@ -73,35 +81,124 @@ class GetJson:
         if response:
             return response.text
         else:
-            print('ERROR {}'.format(response.status_code))
-            raise ValueError('ERROR STATUS CODE {}'.format(response.status_code))
+            return json.dumps({"error": 'ERROR {}{}'.format(response.status_code, self.url)})
 
     def __call__(self, *args, **kwargs):
-        result = json.loads(self._get_json())
+        try:
+            json.loads(self._get_json())
+            result = json.loads(self._get_json())
+        except JSONDecodeError:
+            answer = str(self._get_json())
+            result = {"error": answer}
+            result = json.dumps(result)
+            result = json.loads(result)
         return result
 
 
 def mane():
-    data = {
+    data1 = {
         "phone": {
             "phone": "79123456789"
         }
 
     }
 
-    data1 = {
+    data2 = {
         "name_standart": {
             "firstname": "Иванов",
             "lastname": "Иван",
             "middlename": "Иванович",
-            "day": "",
-            "mounth": "",
-            "year": "",
+            "day": "01",
+            "mounth": "01",
+            "year": "1991",
         },
     }
-    result = ParserHimera(data=data)()
-    # writer_answer(answer=result)
-    print(result)
+
+    data3 = {
+        "passport": {
+            "passport": "1234567890",
+        },
+    }
+
+    data4 = {
+        "inn_fl": {
+            "inn_fl": "1234567890",
+        },
+    }
+
+    data5 = {
+        "email": {
+            "email": "demo@demo.ru",
+        },
+    }
+
+    data6 = {
+        "snils": {
+            "snils": "12602903624",
+        },
+    }
+
+    data7 = {
+        "adres": {
+            "city": "тамбов",
+            "street": "рылеева",
+            "home": "68",
+            "flat": "31",
+        },
+    }
+
+    data8 = {
+        "avto": {
+            "avto": "H688AA77",
+        },
+    }
+
+    data9 = {
+        "vin": {
+            "win": "kgft5l05lfds46d",
+        },
+    }
+
+    data10 = {
+        "inn": {
+            "inn": "1234567890",
+        },
+    }
+
+    data11 = {
+        "scoring": {
+            "lastname": "иванов",
+            "firstname": "иван",
+            "middlename": "иванович",
+            "birthday": "01.01.1991",
+        },
+    }
+
+    data12 = {
+        "credit": {
+            "lastname": "иванов",
+            "firstname": "иван",
+            "middlename": "иванович",
+            "birthday": "01.01.1991",
+        },
+    }
+
+    data13 = {
+        "credit": {
+            "lastname": "иванов",
+            "firstname": "иван",
+            "middlename": "иванович",
+            "birthday": "01.01.1991",
+        },
+    }
+
+    data = [data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13]
+
+    # result = ParserHimera(data=data9)()
+    # print(result)
+    for i in data:
+        result = ParserHimera(data=i)()
+        print(result)
 
 
 if __name__ == "__main__":

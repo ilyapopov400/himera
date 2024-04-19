@@ -47,7 +47,7 @@ class EmailForm(forms.Form):
 
 
 class SnilsForm(forms.Form):
-    snils = forms.CharField(label="номер СНИЛС", max_length=10, min_length=10)
+    snils = forms.CharField(label="номер СНИЛС", max_length=11, min_length=11)
 
 
 class AdresForm(forms.Form):
